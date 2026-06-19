@@ -53,6 +53,26 @@
     --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
+body.light-theme {
+    --bg-app: #f1f5f9;
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --bg-card-hover: rgba(255, 255, 255, 0.95);
+    --border-color: rgba(15, 23, 42, 0.08);
+    --border-focus: #3b82f6;
+    
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    
+    --bg-feature: rgba(16, 185, 129, 0.08);
+    --bg-announcement: rgba(59, 130, 246, 0.08);
+    --bg-issue: rgba(239, 68, 68, 0.08);
+    --bg-deprecation: rgba(245, 158, 11, 0.08);
+    --bg-update: rgba(139, 92, 246, 0.08);
+    
+    --accent-glow: rgba(59, 130, 246, 0.15);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -1136,4 +1156,134 @@ body {
         height: auto;
         overflow-y: visible;
     }
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    width: 38px;
+    height: 38px;
+    border-radius: var(--border-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.25s ease;
+}
+
+.theme-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-primary);
+}
+
+body.light-theme .theme-toggle-btn {
+    background: rgba(0, 0, 0, 0.02);
+    color: var(--text-secondary);
+}
+
+body.light-theme .theme-toggle-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-primary);
+}
+
+/* Light Theme Element Customizations */
+body.light-theme {
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.04) 0px, transparent 50%);
+}
+
+body.light-theme .app-header {
+    background: rgba(241, 245, 249, 0.85);
+}
+
+body.light-theme .status-indicator {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+body.light-theme .status-indicator span#last-updated-text {
+    color: #475569;
+}
+
+body.light-theme #search-query {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+body.light-theme #search-query:focus {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+body.light-theme .filter-btn:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+body.light-theme .stat-item {
+    background: rgba(0, 0, 0, 0.01);
+}
+
+body.light-theme .count-badge {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+body.light-theme .update-content {
+    color: #334155;
+}
+
+body.light-theme .update-content code {
+    background: rgba(15, 23, 42, 0.06);
+    color: #1e293b;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+body.light-theme .card-action-btn:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+body.light-theme #tweet-text {
+    background: rgba(0, 0, 0, 0.02);
+    color: #0f172a;
+}
+
+body.light-theme #tweet-text:focus {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+body.light-theme .selected-meta {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+body.light-theme .tone-btn {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+body.light-theme .tone-btn:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+body.light-theme .tag-pill {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+body.light-theme .tag-pill:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+body.light-theme .skeleton-line {
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.03) 25%, rgba(0, 0, 0, 0.06) 50%, rgba(0, 0, 0, 0.03) 75%);
+    background-size: 200% 100%;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+body.light-theme .update-card.selected {
+    box-shadow: 0 0 0 2px var(--border-focus), var(--shadow-md);
+    background: rgba(255, 255, 255, 0.95);
 }
