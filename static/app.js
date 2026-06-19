@@ -119,6 +119,12 @@ function setupEventListeners() {
     copyTweetBtn.addEventListener('click', copyTweetToClipboard);
     tweetShareBtn.addEventListener('click', shareOnTwitter);
 
+    // Export CSV click
+    const exportCsvBtn = document.getElementById('export-csv-btn');
+    if (exportCsvBtn) {
+        exportCsvBtn.addEventListener('click', exportToCSV);
+    }
+
     // Mobile / Tablet Drawer actions
     mobileComposerToggle.addEventListener('click', () => {
         sidebarRight.classList.add('open');
@@ -283,6 +289,12 @@ function renderFeed() {
                     </svg>
                     <span>Docs</span>
                 </a>
+                <button class="card-action-btn copy-card-btn" title="Copy release note text to clipboard">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z" fill="currentColor"/>
+                    </svg>
+                    <span>Copy Note</span>
+                </button>
                 <button class="card-action-btn tweet-select" title="Compose tweet with this note">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
@@ -292,6 +304,19 @@ function renderFeed() {
             </div>
         `;
         
+        // Handle copy note action
+        card.querySelector('.copy-card-btn').addEventListener('click', async (e) => {
+            e.stopPropagation(); // Avoid selecting card
+            const textToCopy = `[${update.date}] BigQuery ${update.type}\n\n${update.content_text}`;
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+                showToast("Note copied to clipboard! 📋");
+            } catch (err) {
+                console.error(err);
+                showToast("Failed to copy note");
+            }
+        });
+
         // Handle selecting card
         card.addEventListener('click', (e) => {
             // If user clicks a link directly, let it open and do not trigger select
@@ -522,4 +547,55 @@ function shareOnTwitter() {
     }
     const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
     window.open(shareUrl, '_blank', 'width=600,height=400,resizable=yes');
+}
+
+// Export currently active / filtered list to CSV
+function exportToCSV() {
+    if (filteredUpdates.length === 0) {
+        showToast("No updates to export!");
+        return;
+    }
+    
+    // Define CSV Headers
+    const headers = ['ID', 'Date', 'Type', 'Content Text', 'Docs URL'];
+    
+    // Generate CSV rows
+    const rows = filteredUpdates.map(u => [
+        u.id,
+        u.date,
+        u.type,
+        u.content_text,
+        u.docs_url
+    ]);
+    
+    // Helper to escape CSV values safely
+    const escapeCSV = (val) => {
+        if (val === null || val === undefined) return '';
+        let stringVal = String(val);
+        stringVal = stringVal.replace(/"/g, '""');
+        if (stringVal.includes(',') || stringVal.includes('\n') || stringVal.includes('"')) {
+            return `"${stringVal}"`;
+        }
+        return stringVal;
+    };
+    
+    // Build CSV content
+    const csvContent = [
+        headers.join(','),
+        ...rows.map(row => row.map(escapeCSV).join(','))
+    ].join('\n');
+    
+    // Trigger download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    
+    const timestamp = new Date().toISOString().slice(0, 10);
+    link.setAttribute("download", `bigquery_release_notes_${timestamp}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    showToast("CSV file exported! 📥");
 }

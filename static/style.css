@@ -467,8 +467,20 @@ body {
 .feed-header {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     margin-bottom: 1.5rem;
+}
+
+.feed-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    border-radius: var(--border-radius-sm);
 }
 
 .feed-header h2 {
